@@ -1,0 +1,7 @@
+{
+      "name": "castle",
+      "version": "0.0.1",
+      "dependencies": {
+          "kafka" : "0.1.7"
+      }
+}
