@@ -8,11 +8,15 @@ var MONGO_DB = 'messages';
 var KAFKA_HOST = '127.0.0.1';
 var KAFKA_PORT = 9092;
 var Mongo = require('mongodb');
-var consumer = new Consumer();
+var consumer = new Consumer({
+      host:         KAFKA_HOST,
+      port:         KAFKA_PORT,
+      pollInterval:  2000
+});
 
 
 // MONGO ---------------------
-console.log("Connecting to mongo at ", MONGO_HOST, ":", MONOGO_PORT, '/', MONGO_DB);
+console.log("Connecting to mongo at ", MONGO_HOST, ":", MONGO_PORT, '/', MONGO_DB);
 var mongoClient = new Mongo.Db(MONGO_DB, new Mongo.Server(MONGO_HOST, MONGO_PORT, {}));
 
 
@@ -52,48 +56,50 @@ consumer.on('offset', function() {
 });
 
 
+function startProducer(){
+  console.log('about to produce...');
+  var producer = new Producer(
+      {
+          // these are also the default values
+          host:         KAFKA_HOST,
+          port:         KAFKA_PORT,
+          topic:        TOPIC,
+          partition:    0
+      }
+  );
+  producer.connect().on('connect', function() {
+    setInterval(function(){
+      console.log('producing');
+      var message = {
+        text : "this is a message",
+        when : new Date()
+      };
+      strmessage = JSON.stringify(message);
+      console.log(strmessage);
+      producer.send(strmessage);
+    }, 4000);
+    // producer.close();
+  });
+}
+
+
 
 
 mongoClient.open(function(err, p_client) {
+  if (!!err){
+    console.log("mongo connection failed: ", err);
+  } else {
+    console.log("mongo connection opened");
 
-  consumer.connect(function() {
-    consumer.subscribeTopic({name: TOPIC, partition: 0});
-    console.log("there are ", consumer.topics(), " topics.");
-    //consumer.close();
-  });
+    consumer.connect(function() {
+      console.log("connected.  proceeding to subscribe...");
+      consumer.subscribeTopic({name: TOPIC, partition: 0});
+      console.log("there are ", consumer.topics(), " topics.");
+      //consumer.close();
+    });
+
+    startProducer();
+
+  }
 
 });
-
-
-
-
-var producer = new Producer(
-    {
-        // these are also the default values
-        host:         KAFKA_HOST,
-        port:         KAFKA_PORT,
-        topic:        TOPIC,
-        partition:    0
-    }
-);
-
-
-console.log('about to produce...');
-producer.connect().on('connect', function() {
-  setInterval(function(){
-    console.log('producing');
-    var message = {
-      text : "this is a message",
-      when : new Date()
-    };
-    strmessage = JSON.stringify(message);
-    console.log(strmessage);
-    producer.send(strmessage);
-  }, 4000);
-  // producer.close();
-});
-
-
-
-
-
