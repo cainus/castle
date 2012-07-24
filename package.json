@@ -2,6 +2,8 @@
       "name": "castle",
       "version": "0.0.1",
       "dependencies": {
-          "kafka" : "0.1.7"
+          "kafka" : "0.1.7",
+          "mongodb" : "1.1.0",
+          "forever-monitor" : "1.0.2"
       }
 }
