@@ -1,9 +1,24 @@
 {
-      "name": "castle",
-      "version": "0.0.1",
-      "dependencies": {
-          "kafka" : "0.1.7",
-          "mongodb" : "1.1.0",
-          "forever-monitor" : "1.0.2"
-      }
+  "name": "castle",
+  "version": "0.0.1",
+  "dependencies": {
+    "Percolator": "1.0.8",
+    "prozess": "0.3.5"
+  },
+  "description": "node http server for listening to a kafka topic",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cainus/castle.git"
+  },
+  "keywords": [
+    "kafka",
+    "rest",
+    "http"
+  ],
+  "author": "Gregg Caines",
+  "license": "BSD"
 }
