@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "dependencies": {
     "Percolator": "1.0.8",
-    "prozess": "0.3.5"
+    "prozess": "0.3.5",
+    "bignum": "~0.6.0"
   },
   "description": "node http server for listening to a kafka topic",
   "main": "index.js",
